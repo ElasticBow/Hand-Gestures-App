@@ -1,3 +1,5 @@
+prediction_1 = ""
+
 Webcam.set({
     width:350,
     height:300,
@@ -8,8 +10,6 @@ Webcam.set({
 camera = document.getElementById("camera");
 
 Webcam.attach('#camera');
-
-<script src=" https://unpkg.com/ml5@0.4.3/dist/ml5.min.js "></script>
 
 function take_snapshot()
 {
@@ -25,3 +25,57 @@ classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models
 function modelLoaded() {
     console.log('Model Loaded!');
 }
+
+function speak(){
+    var synth = window.speechSynthesis;
+    speak_data_1 = "The hand gesture is" + prediction_1;
+    var utterThis = new SpeechSynthesisUtterance(speak_data_1);
+    synth.speak(utterThis);
+  }
+
+function check()
+{
+  img = document.getElementById('captured_image');
+  classifier.classify(img, gotResult);
+}
+
+function gotResult(error, results) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(results);
+      document.getElementById("result_gesture_name").innerHTML = results[0].label;
+      prediction_1 = results[0].label;
+      speak();
+      if(results[0].label == "Thumbs Up")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128077;";
+      }
+      if(results[0].label == "Thumbs Down")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128078;";
+      }
+      if(results[0].label == "Okay")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128076;";
+      }
+      if(results[0].label == "Peace Sign")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#9996;";
+      }
+      if(results[0].label == "Stop Sign")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128400;";
+      }
+      if(results[0].label == "Wave")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128075;";
+      }
+      if(results[0].label == "Pointing")
+      {
+          document.getElementById("update_gesture").innerHTML = "&#128072;";
+      }
+
+    }
+  }
+  
